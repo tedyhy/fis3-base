@@ -2,10 +2,11 @@
 @import "mixin";
 
 .header {
+
     b {
         display: inline-block;
         @include size(36px, 36px);
-        background: url(img/1.jpg);
+        background: url(../../css/img/index.jpg);
         background-size: 100% 100%;
     }
 }

@@ -27,5 +27,20 @@
   "bugs": {
     "url": "https://github.com/yanhaijing/fis3-base/issues"
   },
-  "homepage": "https://github.com/yanhaijing/fis3-base"
+  "homepage": "https://github.com/yanhaijing/fis3-base",
+  "dependencies": {
+    "animate.css": "^3.6.1",
+    "bootstrap": "^3.3.5",
+    "compass-mixins": "^0.12.7",
+    "es6-promise": "^2.0.1",
+    "fetch": "^1.1.0",
+    "jquery": "^1.9.1",
+    "jquery-placeholder": "^2.3.1",
+    "jquery-ui": "^1.12.1",
+    "jquery-validation": "^1.13.1",
+    "normalize.css": "^3.0.3",
+    "process": "^0.11.10",
+    "underscore": "^1.8.3",
+    "zepto": "^1.1.6"
+  }
 }

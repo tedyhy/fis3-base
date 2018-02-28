@@ -14,10 +14,11 @@ fis依赖node，了解node请看这里[nodejs.org](http://nodejs.org/)。
     
     # hook类
     npm install -g fis3-hook-commonjs
+    npm install -g fis3-hook-node_modules # 使用 node_modules 模块
     
     # parser类
     ## 下面两个sass插件二选一，还需要更改fisconf里对应的插件
-    npm install -g fis-parser-sass # node版本需 <= 0.12
+    npm install -g fis-parser-sass # node版本需 <= 0.12，可跳过
     npm install -g fis-parser-node-sass # node >= 4
 
     npm install -g fis-parser-less
@@ -58,7 +59,7 @@ fis依赖node，了解node请看这里[nodejs.org](http://nodejs.org/)。
 
 发布
 
-	fis3 release
+	fis3 release # 自动监听刷新 fis3 release -wL
 
 	fis3 release prod-debug # 本地查看发布产品库状态
     fis3 release prod # 发布产品库
