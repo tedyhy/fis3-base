@@ -1,7 +1,7 @@
 // 设置项目属性
 fis.set('project.name', 'fis3-base');
 fis.set('project.static', '/static');
-fis.set('project.files', ['*.html', 'map.json', '/test/*']);
+fis.set('project.files', ['*.html', 'map.json']);
 
 // 引入模块化开发插件，设置规范为 commonJs 规范。
 fis.hook('commonjs', {
@@ -154,8 +154,8 @@ var map = {
     path: ''
   },
   'prod': {
-    host: 'http://yanhaijing.com',
-    path: '/${project.name}'
+    host: '', // http://yanhaijing.com',
+    path: '', // '/${project.name}'
   },
   'prod-debug': {
     host: '',
