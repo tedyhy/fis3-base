@@ -1,9 +1,24 @@
+/// ************** test **************
+
+import '../css/test.less'
+import '../css/index.scss'
+require('perfect-css/dist/css/base.css')
+// import {createStore, combineReducers} from 'redux'
+// console.log(createStore.toString(), combineReducers.toString());
+// import {Select} from 'perfect-css/dist/js/perfect.js'
+// console.log(Select)
+
+require('perfect-css')
+
+
+
+/// ************** APP.js **************
 require('sammy')
 
 // common
-import koHeader from 'modules/app/ko-header/main'
+import koHeader from './ko-header/main'
 // demo-page
-import demoPage from 'modules/app/demo-page/main'
+import demoPage from './demo-page/main'
 
 var pageVm = {
   name: ko.observable(),

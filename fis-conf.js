@@ -1,15 +1,15 @@
 // 设置项目属性
 fis.set('project.name', 'fis3-base');
 fis.set('project.static', '/static');
-fis.set('project.files', ['*.html', 'map.json']);
+fis.set('project.files', ['client/**/*.html', 'map.json']);
 fis.set('project.ignore', fis.get('project.ignore').concat([
   'server'
 ]));
 
 // 引入模块化开发插件，设置规范为 commonJs 规范。
 fis.hook('commonjs', {
-  baseUrl: './modules',
-  extList: ['.js', '.es']
+  baseUrl: './client/modules',
+  extList: ['.js']
 });
 
 // 禁用 components，使用 node_modules
@@ -20,22 +20,24 @@ fis.hook('node_modules')
 /*************************目录规范*****************************/
 
 // 开启同名依赖
-fis.match('/modules/**', {
+fis.match('/client/modules/**', {
   useSameNameRequire: true
 });
 
 // 支持 node_modules
-fis.match('/{node_modules}/**.js', {
+fis.match('/node_modules/**.js', {
   isMod: true,
   useSameNameRequire: true
 });
 
 
 // ------ 全局配置 ------
-// 允许你在 js 中直接 require css+文件
+// 允许你在 js 中直接 require css及文件
 fis.match('*.{js,es}', {
   preprocessor: [
-    fis.plugin('js-require-file'),
+    fis.plugin('js-require-file', {
+      useEmbedWhenSizeLessThan: 10 * 1024 // 小于10k用base64
+    }),
     fis.plugin('js-require-css', {
       mode: 'dependency'
     })
@@ -51,62 +53,56 @@ fis.match('**.png', {
 
 
 // ------ 配置 lib ------
-fis.match('/lib/**.js', {
-  release: '${project.static}/$&'
+fis.match('/client/(lib/**.js)', {
+  release: '${project.static}/$1'
 });
 
+// ------ 配置 favicon.ico ------
+fis.match('/client/(favicon.ico)', {
+  release: '${project.static}/$1'
+})
 
 // ------ 配置 node_modules ------
 fis.match('/node_modules/**', {
   release: '${project.static}/$&'
 });
-fis.match('/node_modules/**.css', {
-  isMod: true,
-  release: '${project.static}/$&'
-});
-fis.match('/node_modules/**.js', {
-  isMod: true,
-  release: '${project.static}/$&'
-});
-
 
 // ------ 配置 modules ------
-fis.match('/modules/(**)', {
+fis.match('client/modules/(**)', {
   release: '${project.static}/$1'
 })
 
 // ------ 配置 css ------
-fis.match(/^\/modules\/(.*\.scss)$/i, {
-  parser: fis.plugin('node-sass', {
-    include_paths: ['modules/css', 'node_modules'] // 加入文件查找目录
-  })
+fis.match('*.scss', {
+  rExt: '.css',
+  parser: [
+    fis.plugin('node-sass', {
+      include_paths: ['client/modules', 'node_modules']
+    })
+  ]
 });
-fis.match(/^\/modules\/(.*\.less)$/i, {
+fis.match('*.less', {
   parser: fis.plugin('less', {
-    paths: []
+    paths: ['client/modules', 'node_modules']
   })
 });
-fis.match(/^\/modules\/(.*\.(scss|less|css))$/i, {
+fis.match(/.*\.(scss|less|css)$/i, {
   rExt: '.css',
   isMod: true,
-  release: '${project.static}/$1',
+  release: '${project.static}/$&',
   postprocessor: fis.plugin('autoprefixer', {
     browsers: ['IE >= 8', 'Chrome >= 30', 'last 2 versions'] // pc
     // browsers: ['Android >= 4', 'ChromeAndroid > 1%', 'iOS >= 6'] // wap
   })
 });
-fis.match(/^\/modules\/(.*\.(?:png|jpg|gif))$/i, {
+fis.match(/^\/client\/(.*\.(?:png|jpg|gif))$/i, {
   release: '${project.static}/$1'
 });
 
 // ------ 配置 js ------
-fis.match(/^\/modules\/(.*\.es)$/i, {
+fis.match(/^\/client\/modules\/(.*(\.es|\.js))$/i, {
   parser: fis.plugin('babel-5.x'),
-  rExt: 'js',
-  isMod: true,
-  release: '${project.static}/$1'
-});
-fis.match(/^\/modules\/(.*\.js)$/i, {
+  rExt: '.js',
   isMod: true,
   release: '${project.static}/$1'
 });
