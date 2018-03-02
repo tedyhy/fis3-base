@@ -1,0 +1,31 @@
+<bread-crumb params='content: "DEMO 页"'></bread-crumb>
+
+<div class="app-version-config container-fluid">
+  <div class="wrapper">
+    <div class="row">
+      <div class="col-lg-24 col-md-24">
+        <div class="table-wrapper scroll-x">
+          <table class="bs-table bs-table-hover col-md-44">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>name</th>
+            </tr>
+            </thead>
+            <tbody data-bind="foreach: data">
+            <tr>
+              <td data-bind="text: $parent.getClientId(id)"></td>
+              <td data-bind="text: name"></td>
+              <td>
+                <div>
+                  <button data-bind="click: function (data, event) { $parent.handleDelete(data, event); }" type="button" role="button" class="bs-btn bs-btn-link">删除</button>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

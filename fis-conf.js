@@ -2,6 +2,9 @@
 fis.set('project.name', 'fis3-base');
 fis.set('project.static', '/static');
 fis.set('project.files', ['*.html', 'map.json']);
+fis.set('project.ignore', fis.get('project.ignore').concat([
+  'server'
+]));
 
 // 引入模块化开发插件，设置规范为 commonJs 规范。
 fis.hook('commonjs', {
@@ -109,27 +112,6 @@ fis.match(/^\/modules\/(.*\.js)$/i, {
 });
 
 
-// ------ 配置前端模版 使用template.js ------
-fis.match('**.tmpl', {
-  parser: fis.plugin('template', {
-    sTag: '<#',
-    eTag: '#>',
-    global: 'template'
-  }),
-  isJsLike: true,
-  release: false
-});
-
-
-// ------ 配置模拟数据 ------
-// fis.match('/test/**', {
-//   release: '$0'
-// });
-// fis.match('/test/server.conf', {
-//   release: '/config/server.conf'
-// });
-
-
 /*************************打包规范*****************************/
 
 // 因为是纯前端项目，依赖不能自动被加载进来，所以这里需要借助一个 loader 来完成，
@@ -154,7 +136,7 @@ var map = {
     path: ''
   },
   'prod': {
-    host: '', // http://yanhaijing.com',
+    host: '', // 如 http://yanhaijing.com',
     path: '', // '/${project.name}'
   },
   'prod-debug': {
@@ -189,7 +171,6 @@ Object.keys(map).forEach(function(v) {
     .match('::package', {
       spriter: fis.plugin('csssprites', {
         layout: 'matrix',
-        // scale: 0.5, // 移动端二倍图用
         margin: '10'
       }),
       postpackager: fis.plugin('loader', {
@@ -220,10 +201,6 @@ Object.keys(map).forEach(function(v) {
     .match('/modules/app/**.{es,js}', {
       packTo: '/pkg/aio.js'
     })
-  // 为了上线方便，将静态文件发布到同一个目录
-  // .match('**/(*.{css,less,scss,es,js,jpg,png,gif})', {
-  //     release: '/prod/$1'
-  // })
 });
 
 
@@ -234,9 +211,6 @@ Object.keys(map)
   })
   .forEach(function(v) {
     fis.media(v)
-      // .match('**.html', {
-      //   optimizer: fis.plugin('html-compress')
-      // })
       .match('**.{es,js}', {
         optimizer: fis.plugin('uglify-js')
       })
@@ -262,22 +236,3 @@ fis.media('prod')
       })
     ]
   });
-
-
-// // 发布到指定的机器
-// ['rd', 'rd-debug'].forEach(function(v) {
-//   fis.media(v)
-//     .match('*', {
-//       deploy: [
-//         fis.plugin('skip-packed', {
-//           // 默认被打包了 js 和 css 以及被 css sprite 合并了的图片都会在这过滤掉，
-//           // 但是如果这些文件满足下面的规则，则依然不过滤
-//           ignore: []
-//         }),
-//         fis.plugin('http-push', {
-//           receiver: 'xxx/fisreceiver.php',
-//           to: 'xxx/' + fis.get('project.name')
-//         })
-//       ]
-//     });
-// });
