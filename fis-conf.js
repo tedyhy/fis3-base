@@ -104,6 +104,7 @@ fis.match(/^\/client\/modules\/(.*(\.es|\.js))$/i, {
   parser: fis.plugin('babel-5.x'),
   rExt: '.js',
   isMod: true,
+  sourceMaps: true,
   release: '${project.static}/$1'
 });
 
@@ -123,17 +124,9 @@ fis.match('::package', {
 
 // debug 后缀，不会压缩
 var map = {
-  'rd': {
-    host: '',
-    path: ''
-  },
-  'rd-debug': {
-    host: '',
-    path: ''
-  },
   'prod': {
-    host: '', // 如 http://yanhaijing.com',
-    path: '', // '/${project.name}'
+    host: '', // 如：cdn
+    path: '', // 如：'/${project.name}'
   },
   'prod-debug': {
     host: '',
@@ -141,7 +134,7 @@ var map = {
   }
 };
 
-// 通用 1.替换 url 前缀 2.添加 md5 码 3.打包 4.合图 5.重新定义资源路径
+// 通用 1.替换 url 前缀 2.添加 hash 3.打包 4.合图 5.重新定义资源路径
 Object.keys(map).forEach(function(v) {
   var o = map[v];
   var domain = o.host + o.path;
@@ -173,7 +166,7 @@ Object.keys(map).forEach(function(v) {
         allInOne: true,
       })
     })
-    .match('/lib/es5-{shim,sham}.js', {
+    .match('/client/lib/es5-{shim,sham}.js', {
       packTo: '/pkg/es5-shim.js'
     })
     .match('/node_modules/**.css', {
@@ -184,12 +177,6 @@ Object.keys(map).forEach(function(v) {
     })
     .match('/modules/**.{scss,less,css}', {
       packTo: '/pkg/modules.css'
-    })
-    .match('/modules/css/**.{scss,less,css}', {
-      packTo: ''
-    })
-    .match('/modules/css/common.scss', {
-      packTo: '/pkg/common.css'
     })
     .match('/modules/**.{es,js}', {
       packTo: '/pkg/modules.js'
@@ -228,7 +215,7 @@ fis.media('prod')
       }),
 
       fis.plugin('local-deliver', {
-        to: 'dist'
+        to: 'output'
       })
     ]
   });

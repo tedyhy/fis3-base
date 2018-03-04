@@ -86,4 +86,8 @@ $(function() {
 
   ko.applyBindings(pageVm);
   sammyConfig.run('#/');
+
+  setTimeout(() => {
+    require.async('./demo2/main')
+  }, 5e3)
 });
